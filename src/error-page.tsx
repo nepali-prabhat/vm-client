@@ -1,6 +1,6 @@
 import { useRouteError } from "react-router-dom";
 import { SCREEN_DIMENSIONS } from "./constants";
-import { Badge } from "@/components/ui/badge";
+import { GlobalError } from "./components/globalError";
 
 export default function ErrorPage() {
   const error = useRouteError();
@@ -15,12 +15,7 @@ export default function ErrorPage() {
         className="flex flex-col justify-center items-center gap-2"
         style={{ width: SCREEN_DIMENSIONS.width }}
       >
-        <Badge
-          title="Vending Machine"
-          className="text-3xl px-4 shadow-xl translate-x-5 -translate-y-4 truncate callout"
-        >
-          Sorry, an unexpected error has occurred.
-        </Badge>
+      <GlobalError />
       </div>
     </main>
   );
