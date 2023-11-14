@@ -2,6 +2,14 @@ import pepsi from "@/assets/images/pepsi.png";
 import dew from "@/assets/images/dew.png";
 import coke from "@/assets/images/coca.png";
 
+export const STATS = [
+  { name: "Coins", value: 100 },
+  { name: "Cash", value: 200 },
+  { name: "Pepsi", value: 10 },
+  { name: "Coke", value: 10 },
+  { name: "Dew", value: 10 },
+];
+
 export const SCREEN_DIMENSIONS = {
   width: 1000,
   height: 800,
