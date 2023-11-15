@@ -1,9 +1,18 @@
-import { Outlet } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { ModeToggle } from "@/components/mode-toggle";
+// import { GlobalLoader } from "@/components/globalLoader";
 import { Header } from "@/components/header";
+import { HeaderButtonsGroup } from "@/components/header-buttons-group";
 import { SCREEN_DIMENSIONS } from "@/constants";
-import { IterationCw } from "lucide-react";
+import { Outlet } from "react-router-dom";
+
+function VMScreenBody(props: React.PropsWithChildren) {
+  return (
+    <section
+      className={"flex flex-col justify-center items-center gap-4 h-[100%]"}
+    >
+      {props.children}
+    </section>
+  );
+}
 
 export default function VMScreen() {
   return (
@@ -14,20 +23,13 @@ export default function VMScreen() {
         minWidth: SCREEN_DIMENSIONS.width,
       }}
     >
-      <div className="mr-20 flex justify-start items-start gap-1">
-        <Button size="lg">
-          <IterationCw className="mr-1 h-[1.2rem] w-[1.2rem]" />
-          REFUND
-        </Button>
-        <ModeToggle />
-      </div>
+      <HeaderButtonsGroup />
       <Header />
       <div className="flex-1">
-        <section
-          className={"flex flex-col justify-center items-center gap-4 h-[100%]"}
-        >
+        <VMScreenBody>
           <Outlet />
-        </section>
+          {/* <GlobalLoader /> */}
+        </VMScreenBody>
       </div>
     </section>
   );

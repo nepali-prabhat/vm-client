@@ -17,8 +17,13 @@ export const SCREEN_DIMENSIONS = {
 
 export type DrinkType = "pepsi" | "coke" | "dew";
 type DrinkDetail = { id: number; name: DrinkType; src: string; cost: number };
-export const DRINKS: DrinkDetail[]  = [
+export const DRINKS: [DrinkDetail, ...DrinkDetail[]] = [
   { id: 1, name: "pepsi", src: pepsi, cost: 25 },
   { id: 2, name: "coke", src: coke, cost: 20 },
   { id: 3, name: "dew", src: dew, cost: 30 },
 ];
+export const DRINK_NAMES: [DrinkType, ...DrinkType[]] = DRINKS.map(
+  (v) => v.name,
+) as [DrinkType, ...DrinkType[]]; // Because DRINKS's type ensures that there is at least one value, this is safe inferrence.
+
+
