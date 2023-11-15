@@ -2,7 +2,7 @@ import { ArrowBigDownDash, CircleSlash2, } from "lucide-react";
 import coke from "@/assets/images/coca.png";
 import { Button } from "@/components/ui/button";
 
-const show = true;
+const show = false;
 export function VMDispenser() {
   return (
     <section className="">

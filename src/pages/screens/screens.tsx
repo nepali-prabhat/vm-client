@@ -1,8 +1,10 @@
-// import { GlobalLoader } from "@/components/globalLoader";
 import { Header } from "@/components/header";
 import { HeaderButtonsGroup } from "@/components/header-buttons-group";
+import { GlobalLoader } from "@/components/globalLoader";
 import { SCREEN_DIMENSIONS } from "@/constants";
-import { Outlet } from "react-router-dom";
+import { Suspense } from "react";
+import { Await, Outlet, useLoaderData } from "react-router-dom";
+import { GlobalError } from "@/components/globalError";
 
 function VMScreenBody(props: React.PropsWithChildren) {
   return (
@@ -15,6 +17,8 @@ function VMScreenBody(props: React.PropsWithChildren) {
 }
 
 export default function VMScreen() {
+  const { state } = useLoaderData() as any;
+
   return (
     <section
       className="flex flex-col relative"
@@ -27,8 +31,11 @@ export default function VMScreen() {
       <Header />
       <div className="flex-1">
         <VMScreenBody>
-          <Outlet />
-          {/* <GlobalLoader /> */}
+          <Suspense fallback={<GlobalLoader />}>
+            <Await resolve={state} errorElement={<GlobalError />}>
+              {(resolvedState) => <Outlet context={resolvedState} />}
+            </Await>
+          </Suspense>
         </VMScreenBody>
       </div>
     </section>

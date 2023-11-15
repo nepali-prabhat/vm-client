@@ -9,7 +9,6 @@ export const STATS = [
   { name: "Coke", value: 10 },
   { name: "Dew", value: 10 },
 ];
-
 export const SCREEN_DIMENSIONS = {
   width: 1000,
   height: 800,
@@ -27,3 +26,13 @@ export const DRINK_NAMES: [DrinkType, ...DrinkType[]] = DRINKS.map(
 ) as [DrinkType, ...DrinkType[]]; // Because DRINKS's type ensures that there is at least one value, this is safe inferrence.
 
 
+export const PAYMENT_SLOT_FAQ = [
+    {
+        title: "Why is this an input field?",
+        content: `Assume the vending machine includes a physical device with sensors for accurately counting and validating coins and cash. The input fields reflect the recorded amount from this device. `
+    },
+    {
+        title: "How does it communicate?",
+        content: `Usually, these devices are connected to a microcontroller. Assume that we've programmed the microcontroller to send a POST request to our HTTP server upon recording an amount. `
+    }
+]

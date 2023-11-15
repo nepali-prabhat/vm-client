@@ -2,7 +2,7 @@ import { DRINKS } from "@/constants";
 import { useParams } from "react-router-dom";
 import drinkTemplate from "@/assets/images/drinkTemplate.png";
 
-export function ResponsePage() {
+export function Response() {
   const data = useParams();
   const drinkId = data.drinkId;
   const status = data.status;

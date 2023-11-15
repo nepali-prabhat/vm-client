@@ -10,7 +10,7 @@ import { useState } from "react";
 import { Label } from "../ui/label";
 import { toast } from "../ui/use-toast";
 
-const isOpen = true;
+const isOpen = false;
 const drinkSchema = z.enum(["", ...DRINK_NAMES]).default("");
 export function VMRefund() {
   const [drink, setDrink] = useState<DrinkType>();

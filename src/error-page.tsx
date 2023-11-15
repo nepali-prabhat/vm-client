@@ -15,7 +15,7 @@ export default function ErrorPage() {
         className="flex flex-col justify-center items-center gap-2"
         style={{ width: SCREEN_DIMENSIONS.width }}
       >
-      <GlobalError />
+        <GlobalError />
       </div>
     </main>
   );

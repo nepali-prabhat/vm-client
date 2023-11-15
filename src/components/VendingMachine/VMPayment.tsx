@@ -3,9 +3,36 @@ import { Input } from "@/components/ui/input";
 import { Coins, Receipt, ScanBarcode } from "lucide-react";
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
+import { PAYMENT_SLOT_FAQ } from "@/constants";
+import { cn, isLastElement } from "@/lib/utils";
 import { useState } from "react";
 import { toast } from "../ui/use-toast";
+
+function PaymentSlotFAQ() {
+  return (
+    <Accordion type="single" collapsible>
+      {PAYMENT_SLOT_FAQ.map(({ title, content }, i) => (
+        <AccordionItem
+          value={`item-${i}`}
+          key={`PAYMENT_SLOT_FAQ_${i}`}
+          className={cn({
+            "border-b-0": isLastElement(PAYMENT_SLOT_FAQ, i),
+          })}
+        >
+          <AccordionTrigger>{title}</AccordionTrigger>
+          <AccordionContent>{content}</AccordionContent>
+        </AccordionItem>
+      ))}
+    </Accordion>
+  );
+}
 
 const paymentSchema = z.object({
   coins: z.coerce.number(),
@@ -51,7 +78,7 @@ export function VMPayment() {
         <ScanBarcode />
         <h3 className="text-xl font-black">Payment Slot</h3>
       </div>
-      <div className="border rounded-md p-2 grid">
+      <div className="border rounded-md p-2 pb-0 grid">
         <form onSubmit={handleFormSubmit} className="grid gap-2">
           <div className="flex items-center gap-2">
             <div className="h-[100%] grid gap-2 justify-center items-center">
@@ -95,6 +122,9 @@ export function VMPayment() {
             Go <ArrowRightIcon></ArrowRightIcon>
           </Button>
         </form>
+        <div className="px-2">
+          <PaymentSlotFAQ />
+        </div>
       </div>
     </section>
   );
