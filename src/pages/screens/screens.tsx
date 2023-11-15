@@ -23,7 +23,11 @@ export default function VMScreen() {
       </div>
       <Header />
       <div className="flex-1">
-        <Outlet />
+        <section
+          className={"flex flex-col justify-center items-center gap-4 h-[100%]"}
+        >
+          <Outlet />
+        </section>
       </div>
     </section>
   );
