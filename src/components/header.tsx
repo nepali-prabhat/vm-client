@@ -1,14 +1,30 @@
 import cans from "@/assets/images/cans.png";
 import { Badge } from "./ui/badge";
-import { STATS } from "@/constants";
+import { useFetchInventories } from "@/api/inventories";
+import { useFetchFundStock } from "@/api/fundStock";
 
 function Stats() {
+  const inventoriesResponse = useFetchInventories({ throwOnError: false });
+  const fundStockResponse = useFetchFundStock({
+    throwOnError: false,
+    // include: ["Coin", "Cash"],
+  });
+  if (!inventoriesResponse.data || !fundStockResponse.data) {
+    return null;
+  }
+
   return (
     <div className="py-1 px-2 flex items-center gap-4">
-      {STATS.map(({ name, value }) => (
+      {inventoriesResponse.data.map(({ name, stock }) => (
         <div key={`STAT_${name}`} className="flex gap-2">
           <span className="font-black">{name}</span>
-          <span>{value}</span>
+          <span>{stock}</span>
+        </div>
+      ))}
+      {fundStockResponse.data.map(({ fundType, stock }) => (
+        <div key={`STAT_${fundType}`} className="flex gap-2">
+          <span className="font-black">{fundType}</span>
+          <span>{stock}</span>
         </div>
       ))}
     </div>
