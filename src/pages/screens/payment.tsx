@@ -1,28 +1,39 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Link, useParams } from "react-router-dom";
+import { IconButton } from "@/components/ui/button";
+import { useNavigate, useParams } from "react-router-dom";
 import drinkTemplate from "@/assets/images/drinkTemplate.png";
 import { getPublicImagesUrl } from "@/api/api";
 import { useFetchInventory } from "@/api/inventories";
 import { AppLoader } from "@/components/globalLoader";
-import { useCreateOrder } from "@/api/order";
+import { cancelOrTimeoutPendingOrder, createOrder } from "@/api/order";
 import { AxiosError } from "axios";
 import { CornerDownRight, Loader } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
 
 export function Payment() {
   const data = useParams();
+  const navigate = useNavigate();
   const drinkId = data.drinkId;
 
   const [hasConfirmed, setHasConfirmed] = useState<boolean>(false);
-  const [eventStatus, setEventStatus] = useState<string>("Pending Payment");
+  const [eventStatus] = useState<string>("Pending Payment");
   const inventory = useFetchInventory(+drinkId!);
 
-  const createOrderMutation = useCreateOrder();
+  const createOrderMutation = useMutation({ mutationFn: createOrder });
+  const cancelOrTimeoutPendingOrderMutation = useMutation({
+    mutationFn: cancelOrTimeoutPendingOrder,
+    onSuccess: () => {
+      navigate("/");
+    },
+  });
 
   const handleConfirmClick = () => {
     createOrderMutation.mutate();
     setHasConfirmed(true);
+  };
+  const handleCancelClick = () => {
+    cancelOrTimeoutPendingOrderMutation.mutate();
   };
 
   if (inventory.isLoading || !inventory.data) {
@@ -69,14 +80,23 @@ export function Payment() {
         </>
       )}
       <div className="flex gap-2">
-        <Button asChild variant="secondary">
-          <Link to="/">Cancel</Link>
-        </Button>
+        <IconButton
+          isLoading={cancelOrTimeoutPendingOrderMutation.isPending}
+          disabled={cancelOrTimeoutPendingOrderMutation.isPending}
+          variant="secondary"
+          onClick={handleCancelClick}
+        >
+          Cancel
+        </IconButton>
         {!createOrderMutation.error && !hasConfirmed ? (
-          <Button onClick={handleConfirmClick}>
-            <CornerDownRight className="h-[1.2rem] w-[1.2rem]" />
+          <IconButton
+            icon={CornerDownRight}
+            isLoading={createOrderMutation.isPending}
+            disabled={createOrderMutation.isPending}
+            onClick={handleConfirmClick}
+          >
             Confirm
-          </Button>
+          </IconButton>
         ) : null}
       </div>
     </>

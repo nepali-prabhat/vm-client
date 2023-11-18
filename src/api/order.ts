@@ -1,20 +1,11 @@
-import { useMutation } from "@tanstack/react-query";
-import { OrderResponseDto } from "./api.dto";
 import { api } from "./api";
-import { AxiosError } from "axios";
+import { OrderResponseDto } from "./api.dto";
 
-export const useCreateOrder = () => {
-  return useMutation<OrderResponseDto>({
-    mutationFn: () => api.post("/order/inventory/2"),
-    onSuccess: (data) => {
-      console.log("data: ", data);
-    },
-    onError: (error) => {
-      //   if (error instanceof AxiosError) {
-      //     if (error.response?.status === 409) {
-      //       options.onConflict();
-      //     }
-      //   }
-    },
-  });
-};
+export async function createOrder() {
+  const response = await api.post<OrderResponseDto>("/order/inventory/2");
+  return response.data;
+}
+
+export async function cancelOrTimeoutPendingOrder() {
+  await api.put("/order/cancel-or-timeout-pending");
+}
