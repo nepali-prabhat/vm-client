@@ -1,27 +1,18 @@
-# React + TypeScript + Vite
+# Vending machine client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This react client simulates vending machine. Server code repo is: nepali-prabhat/vm-server
 
-Currently, two official plugins are available:
+## Assumptions made for the UI
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- The vending machine has fixed dimensions. (1000 x 800 as defined in constants.ts file)
+- The top portion of the UI is the screen of the vending machine. It is operated by touch
+- We can't perform browser back from screen.
+- The bottom three parts of the UI represent physical elements of the vending machine.
+- The physical elements are assumed to have sensors and microcontrollers. The microcontrollers communicate with the vending machine server via rest api and also listen for server sent events.
+- The payment slot is assumed to accurately count and validate the entered coins or cash.
 
-## Expanding the ESLint configuration
+## How to run?
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+```bash
+pnpm run dev
 ```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list

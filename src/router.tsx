@@ -3,7 +3,6 @@ import App from "./App";
 import ErrorPage from "./error-page";
 import { Drinks } from "./pages/screens/drinks";
 import { Payment } from "./pages/screens/payment";
-import { Response } from "./pages/screens/response";
 import AppError from "./app-error";
 
 export const router = createBrowserRouter([
@@ -20,11 +19,6 @@ export const router = createBrowserRouter([
       {
         path: "/:drinkId",
         element: <Payment />,
-        errorElement: <AppError />,
-      },
-      {
-        path: "/:drinkId/:status",
-        element: <Response />,
         errorElement: <AppError />,
       },
     ],

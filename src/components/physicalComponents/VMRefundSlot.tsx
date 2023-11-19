@@ -36,7 +36,7 @@ export function VMRefund() {
       }
       toast({
         title: "Refund failed",
-        description,
+        description: `${description}. Your item is back in the dispenser`,
       });
     },
   });
