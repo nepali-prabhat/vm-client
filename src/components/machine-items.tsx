@@ -1,10 +1,12 @@
-import { DRINKS } from "@/constants";
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
+import { InventoryItemDto } from "@/api/api.dto";
+import defaultDrinkImage from "@/assets/images/drinkTemplate.png";
+import { getPublicImagesUrl } from "@/api/api";
 
-type Drink = (typeof DRINKS)[0];
+function MachineItem({ id, name, imageName, price }: InventoryItemDto) {
+  const src = imageName ? getPublicImagesUrl(imageName) : defaultDrinkImage;
 
-function MachineItem({ id, name, src, cost }: Drink) {
   return (
     <Button
       asChild
@@ -19,15 +21,15 @@ function MachineItem({ id, name, src, cost }: Drink) {
           alt={`A can of ${name}`}
         />
         <h3 className="text-2xl font-recursive font-black uppercase">{name}</h3>
-        <span>रु {cost || "-"}</span>
+        <span>रु {price || "-"}</span>
       </Link>
     </Button>
   );
 }
-export function MachineItems() {
+export function MachineItems({ drinks }: { drinks: InventoryItemDto[] }) {
   return (
-    <div className="flex gap-5">
-      {DRINKS.map((drink) => (
+    <div className="max-h-[500px] grid grid-cols-3 gap-5 overflow-y-auto">
+      {drinks.map((drink) => (
         <MachineItem key={`MACHINE_ITEM_${drink.name}`} {...drink} />
       ))}
     </div>

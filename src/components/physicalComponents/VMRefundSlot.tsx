@@ -1,28 +1,27 @@
-import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
-import { CircleSlash2, IterationCw } from "lucide-react";
-import { DRINK_NAMES, DrinkType } from "@/constants";
+import { AlertTriangle, IterationCw } from "lucide-react";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Label } from "../ui/label";
 import { toast } from "../ui/use-toast";
+import { useFetchInventories } from "@/api/inventories";
+import { AppLoader } from "../ui/appLoader";
 
-const isOpen = false;
-const drinkSchema = z.enum(["", ...DRINK_NAMES]).default("");
 export function VMRefund() {
-  const [drink, setDrink] = useState<DrinkType>();
+  const [drink, setDrink] = useState<string>();
 
-  const handleDrinkChange = (value: DrinkType) => {
+  const inventoriesResponse = useFetchInventories({ throwOnError: false });
+
+  const handleDrinkChange = (value: string) => {
     setDrink(value);
   };
   const handleFormSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    const response = drinkSchema.safeParse(drink);
-    if (response.success) {
-      const data = { drink: response.data };
+    if (drink && inventoriesResponse.data?.map((d) => d.id).includes(+drink)) {
+      const data = { drink: drink };
       toast({
         title: "You submitted the following values:",
         description: (
@@ -40,15 +39,17 @@ export function VMRefund() {
         <IterationCw />
         <h3 className="text-xl font-black">Refund Slot</h3>
       </div>
-      <div
-        className={cn("border rounded-md", {
-          "opacity-50": !isOpen,
-        })}
-      >
-        {!isOpen ? (
-          <div className="h-[180px]  p-2 flex text-sm font-medium flex-col gap-2 justify-center items-center h-[100%]">
-            <CircleSlash2 className="" />
-            Closed
+      <div className={cn("border rounded-md")}>
+        {inventoriesResponse.isError ? (
+          <div className="flex justify-center items-center text-red-400 min-h-[180px] p-2">
+            <div className="flex flex-col items-center gap-2">
+              <AlertTriangle />
+              <span>Error</span>
+            </div>
+          </div>
+        ) : inventoriesResponse.isLoading || !inventoriesResponse.data ? (
+          <div className="flex justify-center items-center min-h-[180px] p-2">
+            <AppLoader />
           </div>
         ) : (
           <form onSubmit={handleFormSubmit} className="grid gap-2 p-2">
@@ -60,13 +61,16 @@ export function VMRefund() {
               value={drink}
               onValueChange={handleDrinkChange}
             >
-              {DRINK_NAMES.map((d) => (
+              {inventoriesResponse.data.map((d) => (
                 <div
                   key={`REFUND_SLOT_DRINK_${d}_KEY`}
                   className="flex items-center space-x-2"
                 >
-                  <RadioGroupItem value={d} id={`REFUND_SLOT_DRINK_${d}`} />
-                  <Label htmlFor={`REFUND_SLOT_DRINK_${d}`}>{d}</Label>
+                  <RadioGroupItem
+                    value={"" + d.id}
+                    id={`REFUND_SLOT_DRINK_${d.id}`}
+                  />
+                  <Label htmlFor={`REFUND_SLOT_DRINK_${d.id}`}>{d.name}</Label>
                 </div>
               ))}
             </RadioGroup>
