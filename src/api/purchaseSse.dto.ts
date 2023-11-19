@@ -19,6 +19,9 @@ export type PurchaseSseContracts = {
     | "OUT_OF_CASH"
     | "OUT_OF_COINS"
     | "PURCHASE_SUCCESS"
+    | "REFUND_START"
+    | "REFUND_SUCCESS"
+    | "REFUND_FAILED"
     | "PURCHASE_UNEXPECTEDLY_FAILED";
   message: string;
   change: Change;
@@ -28,3 +31,7 @@ export type PurchaseSseContracts = {
 export interface PurchaseSseEventListener {
   (event: PurchaseSseContracts): void;
 }
+
+export type RefundResponseDto = {
+  change: Change;
+};

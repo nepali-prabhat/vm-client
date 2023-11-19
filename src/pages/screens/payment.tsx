@@ -77,8 +77,9 @@ export function Payment() {
     createOrderMutation.error &&
     createOrderMutation.error instanceof AxiosError;
 
+  const defaultStatus = "Pending Payment";
   const eventStatus = createOrderMutation.isSuccess
-    ? paymentSseData?.message ?? "Pending Payment"
+    ? paymentSseData?.message ?? defaultStatus
     : "";
 
   return (

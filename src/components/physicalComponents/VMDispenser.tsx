@@ -5,14 +5,20 @@ import { getPublicImagesUrl } from "@/api/api";
 import { useState } from "react";
 import { toast } from "../ui/use-toast";
 import { cn } from "@/lib/utils";
+import defaultCan from "@/assets/images/drinkTemplate.png";
+import { Badge } from "../ui/badge";
 
 export function VMDispenser() {
   const { sseData: paymentSseData, lastData } = usePaymentSse();
   const [isItemCollected, setIsItemCollected] = useState(false);
 
-  // This is fine.
+  // Note: This is fine.
   // We are conditionally updating the state variable based on state transition
-  if (lastData?.type === "PURCHASE_START" && isItemCollected) {
+  if (
+    (lastData?.type === "PURCHASE_START" ||
+      lastData?.type === "REFUND_START") &&
+    isItemCollected
+  ) {
     setIsItemCollected(false);
   }
 
@@ -52,7 +58,7 @@ export function VMDispenser() {
       <Button
         onClick={handleButtonClick}
         variant="outline"
-        className="w-[100%] h-[180px] p-2"
+        className="w-[100%] h-[200px] p-2"
         disabled={!show}
       >
         <div className="flex flex-col gap-2 items-center justify-center">
@@ -63,12 +69,19 @@ export function VMDispenser() {
             </>
           ) : (
             <div className="flex flex-col items-center justify-center gap-2">
-              {paymentSseData.inventory?.imageName ? (
-                <img
-                  src={getPublicImagesUrl(paymentSseData.inventory.imageName)}
-                  width={"20%"}
-                  alt={`A can of ${paymentSseData.inventory.name}`}
-                />
+              {paymentSseData.inventory ? (
+                <>
+                  <img
+                    src={
+                      paymentSseData.inventory.imageName
+                        ? getPublicImagesUrl(paymentSseData.inventory.imageName)
+                        : defaultCan
+                    }
+                    width={"20%"}
+                    alt={`A can of ${paymentSseData.inventory.name}`}
+                  />
+                  <Badge variant={"outline"}>{paymentSseData.inventory.name}</Badge>
+                </>
               ) : null}
               <span>Coins: {paymentSseData.change.coin}</span>
               <span>Cash: रु {paymentSseData.change.cash}</span>
