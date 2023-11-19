@@ -1,3 +1,4 @@
+import { toast } from "@/components/ui/use-toast";
 import { useEffect } from "react";
 
 export const useSSE = (
@@ -13,6 +14,10 @@ export const useSSE = (
         const eventData = JSON.parse(event.data);
         onMessage(eventData);
       } catch (error) {
+        toast({
+          title: "Unexpected error",
+          description: "There was an error parsing server sent event's json",
+        });
         console.error("Error parsing SSE message:", error);
       }
     };

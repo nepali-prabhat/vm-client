@@ -1,12 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "./api";
 import { CreatePurchaseDto } from "./api.dto";
-import { PurchaseSseContracts } from "./purchaseSse.dto";
+import { PurchaseSseContracts, RefundResponseDto } from "./purchaseSse.dto";
 import { apiBaseUrl } from "@/constants";
 import { useSSE } from "@/hooks/useSse";
 
 export async function createPurchase(body: CreatePurchaseDto) {
   await api.post("/purchase", body);
+}
+
+export async function createRefund(inventoryId: number) {
+  const data = await api.post<RefundResponseDto>(
+    `/purchase/refund/${inventoryId}`,
+  );
+  return data.data;
 }
 
 export function usePaymentSse() {
@@ -21,8 +28,8 @@ export function usePaymentSse() {
     setSSEData(event);
   }, []);
 
-  const handleSSEError = useCallback((error: Event) => {
-    console.error("SSE Connection Error:", error);
+  const handleSSEError = useCallback(() => {
+    // console.error("SSE Connection Error:", error); error: Event
   }, []);
 
   useSSE(`${apiBaseUrl}/purchase/sse`, handleSSEMessage, handleSSEError);

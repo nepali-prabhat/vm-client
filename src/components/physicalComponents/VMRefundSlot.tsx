@@ -9,28 +9,44 @@ import { Label } from "../ui/label";
 import { toast } from "../ui/use-toast";
 import { useFetchInventories } from "@/api/inventories";
 import { AppLoader } from "../ui/appLoader";
+import { useMutation } from "@tanstack/react-query";
+import { createRefund } from "@/api/purchase";
+import { AxiosError } from "axios";
 
 export function VMRefund() {
   const [drink, setDrink] = useState<string>();
 
   const inventoriesResponse = useFetchInventories({ throwOnError: false });
 
+  const createRefundMutation = useMutation({
+    mutationFn: createRefund,
+    onSuccess: (data) => {
+      toast({
+        title: "Refund successful",
+        description: `Collect ${[
+          data.change.coin ? data.change.coin + " coins" : "",
+          data.change.cash ? "रु " + data.change.cash + " cash" : "",
+        ].join(" and ")} from the dispenser`,
+      });
+    },
+    onError: (error) => {
+      let description: string | undefined;
+      if (error instanceof AxiosError) {
+        description = error.response?.data?.message;
+      }
+      toast({
+        title: "Refund failed",
+        description,
+      });
+    },
+  });
+
   const handleDrinkChange = (value: string) => {
     setDrink(value);
   };
   const handleFormSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    if (drink && inventoriesResponse.data?.map((d) => d.id).includes(+drink)) {
-      const data = { drink: drink };
-      toast({
-        title: "You submitted the following values:",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-          </pre>
-        ),
-      });
-    }
+    drink && createRefundMutation.mutate(+drink);
   };
 
   return (
@@ -63,7 +79,7 @@ export function VMRefund() {
             >
               {inventoriesResponse.data.map((d) => (
                 <div
-                  key={`REFUND_SLOT_DRINK_${d}_KEY`}
+                  key={`REFUND_SLOT_DRINK_${d.id}_KEY`}
                   className="flex items-center space-x-2"
                 >
                   <RadioGroupItem
@@ -74,7 +90,7 @@ export function VMRefund() {
                 </div>
               ))}
             </RadioGroup>
-            <Button type="submit">
+            <Button type="submit" disabled={!drink}>
               Go <ArrowRightIcon></ArrowRightIcon>
             </Button>
           </form>

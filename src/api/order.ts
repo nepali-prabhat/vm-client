@@ -23,8 +23,8 @@ export function useOrderSse() {
     setSSEData(event);
   }, []);
 
-  const handleSSEError = useCallback((error: Event) => {
-    console.error("SSE Connection Error:", error);
+  const handleSSEError = useCallback(() => {
+    // console.error("SSE Connection Error:", error); error: Event
   }, []);
 
   useSSE(`${apiBaseUrl}/order/sse`, handleSSEMessage, handleSSEError);
