@@ -60,17 +60,19 @@ Button.displayName = "Button";
 export interface IconButtonProps extends ButtonProps {
   icon?: LucideIcon;
   isLoading: boolean;
+  iconPosition?: "start" | "end";
 }
 const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
-  ({ icon: Icon, isLoading, ...props }, ref) => {
+  ({ icon: Icon, iconPosition = "end", isLoading, ...props }, ref) => {
     return (
       <Button ref={ref} {...props}>
+        {iconPosition === "end" ? props.children : null}
         {isLoading ? (
           <Loader className="h-[1.2rem] w-[1.2rem] mr-2 motion-safe:animate-spin" />
         ) : Icon ? (
           <Icon className="h-[1.2rem] w-[1.2rem] mr-2" />
         ) : null}
-        {props.children}
+        {iconPosition === "start" ? props.children : null}
       </Button>
     );
   },

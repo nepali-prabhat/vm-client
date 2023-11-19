@@ -6,6 +6,5 @@ export const api = axios.create({
 });
 
 export function getPublicImagesUrl(imageName: string) {
-  const src = `${apiBaseUrl}/public/${imageName}`;
-  return src;
+  return `${apiBaseUrl}/public/${imageName}`;
 }

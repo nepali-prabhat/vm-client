@@ -17,3 +17,8 @@ export type OrderResponseDto = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type CreatePurchaseDto = {
+  coin: number;
+  cash: number;
+};

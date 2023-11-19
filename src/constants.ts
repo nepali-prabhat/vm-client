@@ -3,6 +3,7 @@ import dew from "@/assets/images/dew.png";
 import coke from "@/assets/images/coca.png";
 
 export const apiBaseUrl = "http://localhost:3001";
+export const ORDER_TIMEOUT_IN_SECONDS = 60;
 
 export const STATS = [
   { name: "Coins", value: 100 },

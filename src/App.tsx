@@ -1,9 +1,9 @@
 import { Toaster } from "@/components/ui/toaster";
 import VMScreen from "@/pages/screens";
-import { VMDispenser } from "@/components/VendingMachine/VMDispenser";
-import { VMPayment } from "./components/VendingMachine/VMPayment";
+import { VMDispenser } from "@/components/physicalComponents/VMDispenser";
+import { VMPayment } from "./components/physicalComponents/VMPayment";
 import { SCREEN_DIMENSIONS } from "./constants";
-import { VMRefund } from "./components/VendingMachine/VMRefundSlot";
+import { VMRefund } from "./components/physicalComponents/VMRefundSlot";
 import { Separator } from "./components/ui/separator";
 
 function App() {

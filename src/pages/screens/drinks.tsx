@@ -1,5 +1,5 @@
 import { useFetchInventories } from "@/api/inventories";
-import { AppLoader } from "@/components/globalLoader";
+import { AppLoader } from "@/components/ui/appLoader";
 import { MachineItems } from "@/components/machine-items";
 
 export function Drinks() {
