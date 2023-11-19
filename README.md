@@ -5,6 +5,7 @@ This react client simulates vending machine. Server code repo is: nepali-prabhat
 ## How to run?
 
 ```bash
+pnpm install
 pnpm run dev
 ```
 
