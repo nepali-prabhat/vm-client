@@ -80,11 +80,17 @@ export function VMDispenser() {
                     width={"20%"}
                     alt={`A can of ${paymentSseData.inventory.name}`}
                   />
-                  <Badge variant={"outline"}>{paymentSseData.inventory.name}</Badge>
+                  <Badge variant={"outline"}>
+                    {paymentSseData.inventory.name}
+                  </Badge>
                 </>
               ) : null}
-              <span>Coins: {paymentSseData.change.coin}</span>
-              <span>Cash: रु {paymentSseData.change.cash}</span>
+              {paymentSseData.change.coin ? (
+                <span>Coins: {paymentSseData.change.coin}</span>
+              ) : null}
+              {paymentSseData.change.cash ? (
+                <span>Cash: रु {paymentSseData.change.cash}</span>
+              ) : null}
             </div>
           )}
         </div>
